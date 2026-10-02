@@ -260,7 +260,7 @@
     max-width: 15rem;
     color: hsl(var(--ink-inverse));
     /* "RBP Lab on top ... should be a little bigger" — 19 Sep review. */
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     font-weight: 650;
     line-height: 1.1;
     letter-spacing: 0.02em;
@@ -289,9 +289,9 @@
   .nav-link {
     color: hsl(var(--muted-foreground));
     font-family: var(--app-font-mono);
-    /* The PI asked for the navigation to go from ~11px to 16-18px. 0.9rem is
-       16.2px at the 112.5% root. */
-    font-size: 0.9rem;
+    /* The PI asked for ~16px, but that read too large in review; 0.82rem is
+       14.8px at the 112.5% root — still well up from the original 12.6px. */
+    font-size: 0.82rem;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     transition: color 160ms ease;

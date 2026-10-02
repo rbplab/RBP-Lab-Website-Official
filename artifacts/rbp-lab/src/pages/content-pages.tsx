@@ -4,6 +4,8 @@ import {
   Award,
   Check,
   ChevronDown,
+  Copy,
+  ExternalLink,
   Filter,
   GraduationCap,
   Mic,
@@ -30,6 +32,7 @@ import {
   PUBLICATIONS,
   PUBLICATIONS_QUERY,
   mapPublicationDocs,
+  citationText,
   publicationTypeBadge,
   splitCitation,
   type Publication,
@@ -247,6 +250,44 @@ function useCitedPublication(ready: boolean) {
 }
 
 /**
+ * Copies a plain-text reference.
+ *
+ * The async clipboard API needs a secure context and is refused outright by
+ * some browsers, so a failure falls back to selecting the text in a temporary
+ * field for a manual copy rather than silently doing nothing.
+ */
+function CopyCitation({ publication }: { publication: Publication }) {
+  const [state, setState] = useState<'idle' | 'copied' | 'manual'>('idle');
+
+  const copy = async () => {
+    const text = citationText(publication);
+    try {
+      await navigator.clipboard.writeText(text);
+      setState('copied');
+    } catch {
+      const field = document.createElement('textarea');
+      field.value = text;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.appendChild(field);
+      field.select();
+      const ok = document.execCommand?.('copy');
+      document.body.removeChild(field);
+      setState(ok ? 'copied' : 'manual');
+    }
+    window.setTimeout(() => setState('idle'), 2500);
+  };
+
+  return (
+    <button type="button" className="publication-copy" onClick={copy}>
+      {state === 'copied' ? <Check size={12} aria-hidden="true" /> : <Copy size={12} aria-hidden="true" />}
+      {state === 'copied' ? 'Copied' : state === 'manual' ? 'Press Ctrl/Cmd+C' : 'Copy citation'}
+    </button>
+  );
+}
+
+/**
  * A single publication, typeset after the faculty draft the PI preferred: a
  * type badge, the title in the serif face linking straight to the DOI, then
  * authors and venue as separate quieter lines.
@@ -288,13 +329,23 @@ function PublicationEntry({
           {publication.venue} · {publication.year}
           {publication.extra ? ` · ${publication.extra}` : ''}
         </p>
-        {href ? (
-          <p className="publication-doi">
+        {publication.note ? <p className="publication-note">{publication.note}</p> : null}
+
+        <div className="publication-links">
+          {href ? (
             <a href={href} target="_blank" rel="noopener noreferrer">
-              {publication.doi}
+              DOI: {publication.doi}
+              <ExternalLink size={12} aria-hidden="true" />
             </a>
-          </p>
-        ) : null}
+          ) : null}
+          {publication.sourceUrl ? (
+            <a href={publication.sourceUrl} target="_blank" rel="noopener noreferrer">
+              Source record
+              <ExternalLink size={12} aria-hidden="true" />
+            </a>
+          ) : null}
+          <CopyCitation publication={publication} />
+        </div>
       </div>
     </article>
   );

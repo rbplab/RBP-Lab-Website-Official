@@ -55,6 +55,20 @@ export const publication = defineType({
       description: 'Without the https:// prefix, e.g. doi.org/10.1016/j.bbagrm.2025.195115',
     }),
     defineField({
+      name: 'note',
+      title: 'Note',
+      type: 'text',
+      rows: 2,
+      description: 'One plain-language line about what the paper shows.',
+    }),
+    defineField({
+      name: 'sourceUrl',
+      title: 'Source record',
+      type: 'url',
+      description: 'Publisher or PubMed page. Shown next to the DOI.',
+      validation: (rule) => rule.uri({scheme: ['http', 'https']}),
+    }),
+    defineField({
       name: 'extra',
       title: 'Extra detail',
       type: 'string',

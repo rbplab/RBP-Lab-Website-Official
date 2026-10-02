@@ -1683,19 +1683,44 @@
     font-size: 0.82rem;
   }
 
-  .publication-doi {
-    margin: 0;
-    font-size: 0.74rem;
+  .publication-note {
+    margin: 0 0 0.6rem;
+    max-width: 46rem;
+    color: hsl(var(--ink-muted));
+    font-size: 0.84rem;
+    line-height: 1.6;
   }
 
-  .publication-doi a {
-    color: hsl(var(--ink-muted));
+  /* DOI, publisher record and copy action on one row, as in the draft. */
+  .publication-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1.25rem;
+    margin-top: 0.15rem;
+  }
+
+  .publication-links a,
+  .publication-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 0;
+    background: none;
+    padding: 0;
+    color: hsl(var(--accent));
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.72rem;
     text-decoration: none;
   }
 
-  .publication-doi a:hover {
-    color: hsl(var(--accent));
+  .publication-links a:hover,
+  .publication-copy:hover,
+  .publication-links a:focus-visible,
+  .publication-copy:focus-visible {
     text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* Arriving from a research-page citation highlights the entry, so the paper

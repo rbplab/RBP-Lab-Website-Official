@@ -13,16 +13,23 @@ export interface Publication {
    */
   articleImage?: string;
   extra?: string;
+  /** One-line plain-language gloss, from the faculty draft. */
+  note?: string;
+  /** Publisher or PubMed record. Complements the DOI. */
+  sourceUrl?: string;
   type: PublicationType;
 }
 
 export const PUBLICATIONS: Publication[] = [
   {
     id: 'journals-1',
-    citation: 'Ayushi Rehman; Raja Tamilselvan; Priyanka Yadav; Sourabh Chakrabarty; Pitter F. Huesgen; Kusum Kumari Singh — Proteomics uncovers distinct gene regulatory functions of the paralogs MAGOH and MAGOHB in cell proliferation',
+    citation: 'Ayushi Rehman; Raja Tamilselvan; Priyanka Yadav; Sourabh Chakrabarty; Pitter F. Huesgen; Kusum Kumari Singh — Proteomic analysis reveals distinct gene regulatory functions of the paralogs MAGOH and MAGOHB in cell proliferation',
     venue: 'BBA – Gene Regulatory Mechanisms',
     year: '2026',
     type: 'journals',
+    note: 'Comparative proteomics connects MAGOH-paralog biology with cell proliferation.',
+    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/41956154/',
+    doi: 'doi.org/10.1016/j.bbagrm.2026.195152',
   },
   {
     id: 'journals-2',
@@ -39,6 +46,8 @@ export const PUBLICATIONS: Publication[] = [
     doi: 'doi.org/10.1016/j.genrep.2025.102152',
     articleImage: 'https://ars.els-cdn.com/content/image/1-s2.0-S2452014425000251-ga1.jpg',
     type: 'journals',
+    note: 'Genome editing provides a way to distinguish two closely related endogenous proteins.',
+    sourceUrl: 'https://www.sciencedirect.com/science/article/abs/pii/S2452014425000251',
   },
   {
     id: 'journals-4',
@@ -64,6 +73,8 @@ export const PUBLICATIONS: Publication[] = [
     doi: 'doi.org/10.1016/j.bbrc.2025.152540',
     articleImage: 'https://ars.els-cdn.com/content/image/1-s2.0-S0006291X25012550-ga1.jpg',
     type: 'journals',
+    note: 'An alternatively spliced MAGOH isoform has a distinct interaction profile outside the canonical EJC.',
+    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/40889427/',
   },
   {
     id: 'journals-7',
@@ -73,6 +84,8 @@ export const PUBLICATIONS: Publication[] = [
     doi: 'doi.org/10.1016/j.bbagrm.2025.195115',
     articleImage: 'https://ars.els-cdn.com/content/image/1-s2.0-S1874939925000409-gr1.jpg',
     type: 'journals',
+    note: 'A comparative perspective on methods for studying RNA–protein interactions.',
+    sourceUrl: 'https://www.sciencedirect.com/science/article/pii/S1874939925000409',
   },
   {
     id: 'journals-8',
@@ -89,6 +102,9 @@ export const PUBLICATIONS: Publication[] = [
     year: '2024',
     extra: 'Vol.1867(2) pp.195022-195032',
     type: 'journals',
+    note: 'A review of the links between microRNAs, NMD factors and the tools used to investigate them.',
+    sourceUrl: 'https://www.iitg.ac.in/biotech/faculty_profile_full.php?email=kusumsingh%40iitg.ac.in&iitg=1137',
+    doi: 'doi.org/10.1016/j.bbagrm.2024.195022',
   },
   {
     id: 'journals-10',
@@ -98,6 +114,8 @@ export const PUBLICATIONS: Publication[] = [
     doi: 'doi.org/10.1016/j.bbrc.2024.150944',
     articleImage: 'https://ars.els-cdn.com/content/image/1-s2.0-S0006291X24014803-ga1.jpg',
     type: 'journals',
+    note: 'Proximity mapping examines SAP18-associated proteins in early spliceosomal assemblies.',
+    sourceUrl: 'https://www.sciencedirect.com/science/article/pii/S0006291X24014803',
   },
   {
     id: 'journals-11',
@@ -106,6 +124,9 @@ export const PUBLICATIONS: Publication[] = [
     year: '2023',
     extra: 'PMID: 37204171',
     type: 'journals',
+    note: 'Domain-level analysis of how RNPS1 contributes to alternative-splicing activation.',
+    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/37204171/',
+    doi: 'doi.org/10.1111/gtc.13036',
   },
   {
     id: 'journals-12',
@@ -122,6 +143,8 @@ export const PUBLICATIONS: Publication[] = [
     year: '2023',
     doi: 'doi.org/10.1002/cbf.3830',
     type: 'journals',
+    note: 'A synthesis of SAP18 functions across gene regulation and RNA processing.',
+    sourceUrl: 'https://www.iitg.ac.in/biotech/faculty_profile_full.php?email=kusumsingh%40iitg.ac.in&iitg=1137',
   },
   {
     id: 'journals-14',
@@ -139,6 +162,8 @@ export const PUBLICATIONS: Publication[] = [
     doi: 'doi.org/10.1007/s13205-023-03761-2',
     extra: 'Vol.13(340)',
     type: 'journals',
+    note: 'Post-transcriptional regulation of the splicing activator RNPS1 by a microRNA.',
+    sourceUrl: 'https://link.springer.com/article/10.1007/s13205-023-03761-2',
   },
   {
     id: 'journals-16',
@@ -153,6 +178,9 @@ export const PUBLICATIONS: Publication[] = [
     venue: 'IUBMB',
     year: '2022',
     type: 'journals',
+    note: 'Connects RNPS1-dependent alternative splicing to cancer-cell behaviour. Published online in 2022; journal issue in 2023.',
+    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/36300671/',
+    doi: 'doi.org/10.1002/iub.2686',
   },
   {
     id: 'journals-18',
@@ -162,6 +190,8 @@ export const PUBLICATIONS: Publication[] = [
     doi: 'doi.org/10.1007/s11033-022-07676-8',
     extra: 'Vol.12(4)',
     type: 'journals',
+    note: 'Development of an antibody reagent for studying RNPS1.',
+    sourceUrl: 'https://link.springer.com/article/10.1007/s11033-022-07676-8',
   },
   {
     id: 'journals-19',
@@ -172,6 +202,8 @@ export const PUBLICATIONS: Publication[] = [
     extra: 'Vol.24',
     articleImage: 'https://ars.els-cdn.com/content/image/1-s2.0-S2452014421001990-gr1.jpg',
     type: 'journals',
+    note: 'Examines the MAGOH paralog family and its isoform diversity.',
+    sourceUrl: 'https://www.sciencedirect.com/science/article/abs/pii/S2452014421001990',
   },
   {
     id: 'journals-20',
@@ -180,6 +212,9 @@ export const PUBLICATIONS: Publication[] = [
     year: '2021',
     extra: 'Vol.19(04) p.215004',
     type: 'journals',
+    note: 'A computational collaboration investigating non-canonical intron splicing.',
+    sourceUrl: 'https://www.iitg.ac.in/biotech/faculty_profile_full.php?email=kusumsingh%40iitg.ac.in&iitg=1137',
+    doi: 'doi.org/10.1142/S0219720021500141',
   },
   {
     id: 'journals-21',
@@ -189,6 +224,8 @@ export const PUBLICATIONS: Publication[] = [
     doi: 'doi.org/10.1016/j.biochi.2020.10.011',
     articleImage: 'https://ars.els-cdn.com/content/image/1-s2.0-S0300908420302698-gr1.jpg',
     type: 'journals',
+    note: 'UPF3 proteins at the intersection of RNA quality control and neurodevelopment. Published online in 2020; journal issue in 2021.',
+    sourceUrl: 'https://www.sciencedirect.com/science/article/abs/pii/S0300908420302698',
   },
   {
     id: 'journals-22',
@@ -205,6 +242,8 @@ export const PUBLICATIONS: Publication[] = [
     doi: 'doi.org/10.1016/j.compbiomed.2019.103558',
     articleImage: 'https://ars.els-cdn.com/content/image/1-s2.0-S0010482519304135-gr1.jpg',
     type: 'journals',
+    note: 'Interpretable neural-network methods for splice-junction prediction.',
+    sourceUrl: 'https://www.iitg.ac.in/biotech/faculty_profile_full.php?email=kusumsingh%40iitg.ac.in&iitg=1137',
   },
   {
     id: 'journals-24',
@@ -220,6 +259,9 @@ export const PUBLICATIONS: Publication[] = [
     year: '2018',
     extra: 'Vol.72(3) pp.482-495',
     type: 'journals',
+    note: 'A collaborative study of how EJCs help suppress inappropriate splice-site use.',
+    sourceUrl: 'https://discovery.ucl.ac.uk/10063339/',
+    doi: 'doi.org/10.1016/j.molcel.2018.08.030',
   },
   {
     id: 'journals-26',
@@ -236,6 +278,9 @@ export const PUBLICATIONS: Publication[] = [
     year: '2016',
     extra: 'Vol.44 pp.2348-2361',
     type: 'journals',
+    note: 'Links splicing-associated mRNP assembly with recruitment of RNA-export factors.',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4797287/',
+    doi: 'doi.org/10.1093/nar/gkw009',
   },
   {
     id: 'journals-28',
@@ -244,6 +289,9 @@ export const PUBLICATIONS: Publication[] = [
     year: '2013',
     extra: 'Vol.8 pp.1291-1298',
     type: 'journals',
+    note: 'Foundational work establishing contributions of both MAGOH paralogs to EJC function and NMD.',
+    sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/23917022/',
+    doi: 'doi.org/10.4161/rna.25827',
   },
   {
     id: 'journals-29',
@@ -509,10 +557,12 @@ export interface SanityPublicationDoc {
   doi?: string;
   extra?: string;
   type?: string;
+  note?: string;
+  sourceUrl?: string;
 }
 
 export const PUBLICATIONS_QUERY = `*[_type == "publication"] | order(year desc, _createdAt asc){
-  _id, citation, venue, year, doi, extra, type
+  _id, citation, venue, year, doi, extra, type, note, sourceUrl
 }`;
 
 const PUBLICATION_TYPES: PublicationType[] = ['journals', 'conferences', 'books', 'bookChapters'];
@@ -535,6 +585,8 @@ export function mapPublicationDocs(docs: SanityPublicationDoc[]): Publication[] 
       year: doc.year ?? '',
       doi: doc.doi || undefined,
       extra: doc.extra || undefined,
+      note: doc.note || undefined,
+      sourceUrl: doc.sourceUrl || undefined,
       // An unrecognised value would drop the entry from every filter group and
       // make it invisible, so fall back to the largest category.
       type: isPublicationType(doc.type) ? doc.type : 'journals',
@@ -565,3 +617,22 @@ export const publicationTypeBadge: Record<PublicationType, string> = {
   books: 'Book',
   bookChapters: 'Book chapter',
 };
+
+/**
+ * Builds the plain-text reference used by "Copy citation".
+ *
+ * Derived from the stored fields rather than kept as a second copy of the
+ * citation, so it can never drift from what the page shows and works for all
+ * 63 entries rather than only the ones the faculty draft covered.
+ */
+export function citationText(publication: Publication): string {
+  const { authors, title } = splitCitation(publication.citation);
+  const parts = [
+    authors ? `${authors}.` : '',
+    `(${publication.year}).`,
+    `${title}.`,
+    publication.venue ? `${publication.venue}.` : '',
+    publication.doi ? `https://${publication.doi.replace(/^https?:\/\//, '')}` : '',
+  ];
+  return parts.filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+}

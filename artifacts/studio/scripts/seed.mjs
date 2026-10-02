@@ -249,6 +249,8 @@ async function main() {
     type: pub.type,
     ...(pub.doi ? { doi: pub.doi } : {}),
     ...(pub.extra ? { extra: pub.extra } : {}),
+    ...(pub.note ? { note: pub.note } : {}),
+    ...(pub.sourceUrl ? { sourceUrl: pub.sourceUrl } : {}),
   }));
 
   const equipment = await loadFromSite('equipment.ts', 'EQUIPMENT');

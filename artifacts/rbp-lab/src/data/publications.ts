@@ -525,7 +525,11 @@ export function mapPublicationDocs(docs: SanityPublicationDoc[]): Publication[] 
   return docs
     .filter((doc) => doc.citation)
     .map((doc) => ({
-      id: doc._id,
+      // Strip the seed prefix so an anchor is the same whether the entry came
+      // from Sanity ("publication-journals-1") or the bundled fallback
+      // ("journals-1"). Deep links from the research page must not depend on
+      // which source happens to be live.
+      id: doc._id.replace(/^publication-/, ''),
       citation: doc.citation as string,
       venue: doc.venue ?? '',
       year: doc.year ?? '',
@@ -536,3 +540,28 @@ export function mapPublicationDocs(docs: SanityPublicationDoc[]): Publication[] 
       type: isPublicationType(doc.type) ? doc.type : 'journals',
     }));
 }
+
+/**
+ * Splits the stored citation into author list and title.
+ *
+ * Entries are recorded as "Authors — Title" and all 63 use that em dash, which
+ * lets the page typeset the two parts differently (as the faculty draft does)
+ * without re-keying the data. If a dash is ever missing the whole string falls
+ * through as the title rather than silently losing the authors.
+ */
+export function splitCitation(citation: string): { authors?: string; title: string } {
+  const at = citation.indexOf(' \u2014 ');
+  if (at === -1) return { title: citation };
+  return {
+    authors: citation.slice(0, at).trim(),
+    title: citation.slice(at + 3).trim(),
+  };
+}
+
+/** Short label for the type badge. */
+export const publicationTypeBadge: Record<PublicationType, string> = {
+  journals: 'Research article',
+  conferences: 'Conference',
+  books: 'Book',
+  bookChapters: 'Book chapter',
+};

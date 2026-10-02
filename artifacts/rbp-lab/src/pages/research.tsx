@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'wouter';
 import {
   Accordion,
   AccordionContent,
@@ -143,6 +144,26 @@ function FocusAreaBand({ area, index }: { area: FocusArea; index: number }) {
               ))}
             </ul>
           )}
+
+          {/* Each theme cites the work behind it, linking to the exact entry on
+              the publications page rather than the page in general. */}
+          {area.papers && area.papers.length > 0 ? (
+            <div className="focus-papers">
+              <h3 className="focus-papers-label">Key papers</h3>
+              <ul>
+                {area.papers.map((paper) => (
+                  <li key={paper.id}>
+                    <Link href={`/publications#${paper.id}`}>
+                      <span className="focus-paper-title">{paper.title}</span>
+                      <span className="focus-paper-meta">
+                        {[paper.venue, paper.year].filter(Boolean).join(' · ')}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </div>
 
         <div className="focus-band-figure">

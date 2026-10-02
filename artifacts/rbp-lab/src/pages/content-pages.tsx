@@ -30,6 +30,8 @@ import {
   PUBLICATIONS,
   PUBLICATIONS_QUERY,
   mapPublicationDocs,
+  publicationTypeBadge,
+  splitCitation,
   type Publication,
   type PublicationType,
 } from '@/data/publications';
@@ -209,7 +211,104 @@ function PublicationCover({ venue }: { venue: string }) {
   );
 }
 
-function PublicationGroup({ type, publications }: { type: PublicationType; publications: Publication[] }) {
+/**
+ * Resolves the `#paper-id` a research-page citation links to.
+ *
+ * `:target` is useless here: the publications list renders after the browser
+ * has already processed the hash, so the element does not exist at navigation
+ * time and never receives the pseudo-class or a scroll. This waits for the
+ * entry to exist, scrolls to it, and marks it directly.
+ */
+function useCitedPublication(ready: boolean) {
+  const [cited, setCited] = useState<string | null>(null);
+
+  useEffect(() => {
+    const read = () => decodeURIComponent(window.location.hash.replace(/^#/, ''));
+
+    const settle = () => {
+      const id = read();
+      if (!id) {
+        setCited(null);
+        return;
+      }
+      setCited(id);
+      // One frame so the entry is laid out before scrolling to it.
+      requestAnimationFrame(() => {
+        document.getElementById(id)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      });
+    };
+
+    settle();
+    window.addEventListener('hashchange', settle);
+    return () => window.removeEventListener('hashchange', settle);
+  }, [ready]);
+
+  return cited;
+}
+
+/**
+ * A single publication, typeset after the faculty draft the PI preferred: a
+ * type badge, the title in the serif face linking straight to the DOI, then
+ * authors and venue as separate quieter lines.
+ *
+ * The id is a stable anchor so the research page can deep-link to a specific
+ * paper; :target highlights it on arrival.
+ */
+function PublicationEntry({
+  publication,
+  isCited,
+}: {
+  publication: Publication;
+  isCited: boolean;
+}) {
+  const { authors, title } = splitCitation(publication.citation);
+  const href = publication.doi
+    ? `https://${publication.doi.replace(/^https?:\/\//, '')}`
+    : undefined;
+
+  return (
+    <article
+      className={`publication-entry${isCited ? ' is-cited' : ''}`}
+      id={publication.id}
+    >
+      <PublicationCover venue={publication.venue} />
+      <div className="publication-entry-copy">
+        <span className="publication-badge">{publicationTypeBadge[publication.type]}</span>
+        <h3>
+          {href ? (
+            <a href={href} target="_blank" rel="noopener noreferrer">
+              {title}
+            </a>
+          ) : (
+            title
+          )}
+        </h3>
+        {authors ? <p className="publication-authors">{authors}</p> : null}
+        <p className="publication-venue">
+          {publication.venue} · {publication.year}
+          {publication.extra ? ` · ${publication.extra}` : ''}
+        </p>
+        {href ? (
+          <p className="publication-doi">
+            <a href={href} target="_blank" rel="noopener noreferrer">
+              {publication.doi}
+            </a>
+          </p>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
+function PublicationGroup({
+  type,
+  publications,
+  cited,
+}: {
+  type: PublicationType;
+  publications: Publication[];
+  cited: string | null;
+}) {
   const grouped = useMemo(() => {
     const years = new Map<string, Publication[]>();
     for (const publication of publications) {
@@ -230,17 +329,11 @@ function PublicationGroup({ type, publications }: { type: PublicationType; publi
           <div className="publication-year">{year}</div>
           <div className="publication-entries stagger-list">
             {entries.map((publication) => (
-              <article className="publication-entry" key={publication.id}>
-                <PublicationCover venue={publication.venue} />
-                <div className="publication-entry-copy">
-                  <h3>{publication.citation}</h3>
-                  <p>
-                    {publication.venue} · {publication.year}
-                    {publication.doi ? <> · <a href={`https://${publication.doi}`} target="_blank" rel="noopener noreferrer">{publication.doi}</a></> : null}
-                    {publication.extra ? <> · {publication.extra}</> : null}
-                  </p>
-                </div>
-              </article>
+              <PublicationEntry
+                publication={publication}
+                isCited={cited === publication.id}
+                key={publication.id}
+              />
             ))}
           </div>
         </div>
@@ -361,6 +454,7 @@ export function PublicationsPage() {
     PUBLICATIONS,
   );
   const [query, setQuery] = useState('');
+  const cited = useCitedPublication(publications.length > 0);
   const [selected, setSelected] = useState<Set<PublicationType>>(() => new Set(publicationTypeOrder));
   const normalizedQuery = query.trim().toLowerCase();
   const filtered = publications.filter((publication) => {
@@ -405,7 +499,7 @@ export function PublicationsPage() {
       </PageHeader>
 
       <Section tone="base" className="publication-results">
-        {selected.size === 0 ? <p className="empty-state">No publication type selected.</p> : groups.length === 0 ? <p className="empty-state">No publications match &quot;{query}&quot;.</p> : groups.map((group) => <PublicationGroup key={group.type} {...group} />)}
+        {selected.size === 0 ? <p className="empty-state">No publication type selected.</p> : groups.length === 0 ? <p className="empty-state">No publications match &quot;{query}&quot;.</p> : groups.map((group) => <PublicationGroup key={group.type} cited={cited} {...group} />)}
       </Section>
 
       <ConferencesSection />

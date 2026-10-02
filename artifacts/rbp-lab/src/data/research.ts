@@ -1,3 +1,13 @@
+import { splitCitation } from '@/data/publications';
+
+/** A paper cited by a focus area, linked to its entry on /publications. */
+export interface CitedPaper {
+  id: string;
+  title: string;
+  venue: string;
+  year: string;
+}
+
 export interface FocusArea {
   id: string;
   number: string;
@@ -8,6 +18,7 @@ export interface FocusArea {
   body: string[];
   imageSrc: string;
   tags: string[];
+  papers?: CitedPaper[];
 }
 
 export interface Concept {
@@ -159,6 +170,7 @@ export interface SanityResearchDocs {
     body?: string[];
     tags?: string[];
     figureUrl?: string;
+    papers?: { _id: string; citation?: string; venue?: string; year?: string }[];
   }[];
   figures: { _id: string; caption?: string; meta?: string; imageUrl?: string }[];
 }
@@ -168,7 +180,8 @@ export const RESEARCH_QUERY = `{
   "concepts": *[_type == "researchConcept"] | order(order asc){_id, title, eyebrow, icon, body},
   "focusAreas": *[_type == "focusArea"] | order(order asc){
     _id, title, slug, eyebrow, icon, summary, body, tags,
-    "figureUrl": figure.asset->url
+    "figureUrl": figure.asset->url,
+    "papers": papers[]->{_id, citation, venue, year}
   },
   "figures": *[_type == "researchFigure"] | order(order asc){
     _id, caption, meta, "imageUrl": image.asset->url
@@ -211,6 +224,15 @@ export function mapFocusAreas(docs: SanityResearchDocs['focusAreas']): FocusArea
       body: d.body ?? [],
       imageSrc: cdn(d.figureUrl, 1200),
       tags: d.tags ?? [],
+      papers: (d.papers ?? [])
+        .filter((p) => p.citation)
+        .map((p) => ({
+          // Must match the anchor the publications page renders.
+          id: p._id.replace(/^publication-/, ''),
+          title: splitCitation(p.citation as string).title,
+          venue: p.venue ?? '',
+          year: p.year ?? '',
+        })),
     }));
 }
 

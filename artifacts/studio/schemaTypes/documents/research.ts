@@ -104,6 +104,15 @@ export const focusArea = defineType({
       of: [{type: 'string'}],
       options: {layout: 'tags'},
     }),
+    defineField({
+      name: 'papers',
+      title: 'Key papers',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'publication'}]}],
+      description:
+        'Publications supporting this theme. Shown under the detail band and linked ' +
+        'straight to the entry on the publications page.',
+    }),
     defineField({name: 'order', title: 'Sort order', type: 'number', initialValue: 100}),
   ],
   orderings: [{title: 'Manual order', name: 'order', by: [{field: 'order', direction: 'asc'}]}],

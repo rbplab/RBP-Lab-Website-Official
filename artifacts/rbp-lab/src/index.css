@@ -20,32 +20,38 @@
 }
 
 :root {
-  /* Raw palette: all color decisions live here. */
-  --palette-paper: 42 32% 96%;
-  --palette-paper-deep: 40 25% 91%;
-  --palette-paper-sunken: 40 18% 86%;
-  --palette-ink: 203 29% 19%;
-  --palette-ink-soft: 202 14% 38%;
-  --palette-ink-inverse-muted: 40 20% 78%;
-  --palette-rule: 39 16% 80%;
-  --palette-rule-inverse: 224 22% 42%;
-  /* #101D42 */
-  --palette-moss: 224 61% 16%;
-  --palette-moss-dark: 224 61% 16%;
-  --palette-saffron: 39 63% 52%;
+  /* Raw palette: all colour decisions live here.
+     Adopted from the faculty draft supplied by the PI — warm paper, deep teal,
+     and the mint/peach/lilac accents. Hex equivalents are noted so the values
+     can be checked against that source. */
+  --palette-paper: 40 50% 98%;          /* #fcfaf6 */
+  --palette-paper-deep: 0 0% 100%;      /* #ffffff — her .section-white */
+  --palette-paper-sunken: 75 19% 94%;   /* #f1f3ec — her .section-tint */
+  --palette-ink: 176 18% 18%;           /* #253534 */
+  --palette-ink-soft: 160 6% 37%;       /* #596561 */
+  --palette-ink-inverse-muted: 153 27% 80%; /* #bfdace — mint-bright */
+  --palette-rule: 120 9% 88%;           /* #dce2dc */
+  --palette-rule-inverse: 173 30% 38%;
+  --palette-teal: 174 69% 25%;          /* #146b62 */
+  --palette-teal-dark: 173 69% 20%;     /* #10584f */
+  --palette-gold: 44 69% 69%;           /* #e6c879 */
+  --palette-mint: 140 29% 92%;          /* #e4f0e8 */
+  --palette-peach: 23 76% 92%;          /* #fae7db */
+  --palette-lilac: 280 32% 93%;         /* #eee6f2 */
+  --palette-coral: 11 52% 46%;          /* #b34f38 */
 
   /* Semantic tokens: components should only consume these meanings. */
   --surface: var(--palette-paper);
   --surface-raised: var(--palette-paper-deep);
   --surface-sunken: var(--palette-paper-sunken);
-  --surface-inverse: var(--palette-moss-dark);
+  --surface-inverse: var(--palette-teal-dark);
   --ink: var(--palette-ink);
   --ink-muted: var(--palette-ink-soft);
   --ink-inverse: var(--palette-paper);
   --ink-inverse-muted: var(--palette-ink-inverse-muted);
-  --accent: var(--palette-moss);
-  --accent-soft: var(--palette-saffron);
-  --accent-light: 39 42% 87%;
+  --accent: var(--palette-teal);
+  --accent-soft: var(--palette-gold);
+  --accent-light: var(--palette-mint);
   --line: var(--palette-rule);
   --line-inverse: var(--palette-rule-inverse);
 
@@ -63,7 +69,10 @@
   --muted: var(--surface-sunken);
   --muted-foreground: var(--ink-muted);
   --radius: 0.15rem;
-  --app-font-sans: "Avenir Next", "Segoe UI", "Noto Sans", sans-serif;
+  --app-font-sans: "Segoe UI", "Avenir Next", Arial, Helvetica, sans-serif;
+  /* Georgia for headings and publication titles. The serif/sans pairing is the
+     clearest difference in the draft the PI preferred. */
+  --app-font-serif: Georgia, "Times New Roman", Times, serif;
   --app-font-mono: "SFMono-Regular", "Cascadia Code", "Roboto Mono", monospace;
   --space-section: clamp(3.5rem, 7vw, 6.5rem);
   --space-gutter: clamp(1.25rem, 4vw, 3rem);
@@ -133,6 +142,28 @@
   :focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 4px;
+  }
+}
+
+@layer base {
+  /* Georgia carries the headings; the sans stack keeps body copy. Georgia has
+     no weight above 700 and reads heavy, so display type sits at 400 and the
+     tracking tightens to match the draft the PI preferred. */
+  h1,
+  h2,
+  h3,
+  .home-hero-title,
+  .page-header h1,
+  .section-heading h2 {
+    font-family: var(--app-font-serif);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+
+  /* Weight 500 was tuned for Avenir; Georgia at that weight renders synthetic
+     bold in some browsers. */
+  body {
+    font-weight: 400;
   }
 }
 
@@ -1604,22 +1635,82 @@
     padding-top: 1.25rem;
   }
 
+  /* Typeset after the faculty draft: serif title linking to the DOI, with
+     authors and venue stepped down beneath it. */
   .publication-entry h3 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 560;
-    line-height: 1.45;
+    margin: 0.45rem 0 0.5rem;
+    font-family: var(--app-font-serif);
+    font-size: 1.12rem;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.4;
   }
 
-  .publication-entry p {
-    margin: 0.5rem 0 0;
-    color: hsl(var(--ink-muted));
-    font-size: 0.82rem;
-    line-height: 1.5;
+  .publication-entry h3 a {
+    color: hsl(var(--ink));
+    text-decoration: none;
   }
 
-  .publication-entry a {
+  .publication-entry h3 a:hover,
+  .publication-entry h3 a:focus-visible {
     color: hsl(var(--accent));
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .publication-badge {
+    display: inline-block;
+    padding: 0.18rem 0.5rem;
+    border-radius: 0.25rem;
+    background: hsl(var(--accent-light));
+    color: hsl(var(--palette-teal-dark));
+    font-family: var(--app-font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .publication-authors {
+    margin: 0 0 0.35rem;
+    color: hsl(var(--ink-muted));
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+
+  .publication-venue {
+    margin: 0 0 0.3rem;
+    color: hsl(var(--accent));
+    font-size: 0.82rem;
+  }
+
+  .publication-doi {
+    margin: 0;
+    font-size: 0.74rem;
+  }
+
+  .publication-doi a {
+    color: hsl(var(--ink-muted));
+    text-decoration: none;
+  }
+
+  .publication-doi a:hover {
+    color: hsl(var(--accent));
+    text-decoration: underline;
+  }
+
+  /* Arriving from a research-page citation highlights the entry, so the paper
+     being referenced is obvious rather than leaving the reader to scan. */
+  .publication-entry {
+    scroll-margin-top: 7rem;
+    transition: background var(--duration-slow) var(--ease-out);
+  }
+
+  /* Set by useCitedPublication rather than :target — the entry does not exist
+     when the browser handles the hash on an SPA route. */
+  .publication-entry.is-cited {
+    border-radius: 0.5rem;
+    background: hsl(var(--accent-light));
+    box-shadow: 0 0 0 0.75rem hsl(var(--accent-light));
   }
 
   .empty-state {
@@ -3299,6 +3390,60 @@
   }
 
   /* Background concept accordion. */
+  /* Citations under each research theme. Mirrors the faculty draft's model of
+     linking a theme straight to the papers behind it. */
+  .focus-papers {
+    margin-top: 2rem;
+    border-top: 1px solid hsl(var(--line));
+    padding-top: 1.25rem;
+  }
+
+  .focus-papers-label {
+    margin: 0 0 0.85rem;
+    color: hsl(var(--ink-muted));
+    font-family: var(--app-font-mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .focus-papers ul {
+    display: grid;
+    gap: 0.15rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .focus-papers a {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.6rem 0.7rem;
+    border-radius: 0.3rem;
+    transition: background var(--duration-fast) var(--ease-out);
+  }
+
+  .focus-papers a:hover,
+  .focus-papers a:focus-visible {
+    background: hsl(var(--accent-light));
+  }
+
+  .focus-paper-title {
+    font-family: var(--app-font-serif);
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .focus-papers a:hover .focus-paper-title {
+    color: hsl(var(--accent));
+  }
+
+  .focus-paper-meta {
+    color: hsl(var(--ink-muted));
+    font-size: 0.74rem;
+  }
+
   .concept-accordion { margin-top: clamp(2rem, 4vw, 3rem); }
 
   .concept-item { border-bottom: 1px solid hsl(var(--line)); }

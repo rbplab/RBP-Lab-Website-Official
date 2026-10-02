@@ -204,6 +204,32 @@ async function loadFromSite(relPath, exportName) {
 async function main() {
   const cache = new Map();
 
+  // Singleton: one fixed id so re-running updates it rather than adding another.
+  const homeDoc = {
+    _id: 'home-page',
+    _type: 'homePage',
+    title: 'RNA-Binding Proteins Laboratory',
+    lede: 'Investigating the molecular logic of RNA-binding proteins in nonsense-mediated decay, splicing regulation, and gene expression fidelity.',
+    keywords: ['Alternative Splicing', 'Splicing', 'Gene Expression', 'EJC Research'],
+    primaryCtaLabel: 'Explore Research',
+    secondaryCtaLabel: 'Meet the Team',
+    focusEyebrow: 'Research Focus',
+    focusTitle: 'Problems the lab is working on',
+    focusLede:
+      'Our programme spans the assembly of ribonucleoprotein complexes, their disruption in disease, and the regulatory consequences downstream.',
+    newsEyebrow: 'Lab News & Achievements',
+    newsTitle: 'Recent work from the laboratory',
+  };
+  const heroAsset = await uploadOnce('lab/Proteomics.jpeg', cache);
+  if (heroAsset) {
+    homeDoc.heroImage = {
+      _type: 'image',
+      asset: { _type: 'reference', _ref: heroAsset },
+      alt: 'Research figure: western blot of MAGOH and MAGOHB knockouts, ribbon structures of the two paralogs, and a bar chart of mean normalised peptide intensity across knockout and wildtype conditions',
+      caption: 'MAGOH / MAGOHB paralogs \u00b7 Quantitative proteomics',
+    };
+  }
+
   console.log(`\nNews (${NEWS.length})`);
   const newsDocs = [];
   for (const item of NEWS) {
@@ -367,7 +393,7 @@ async function main() {
   }
 
   const tx = client.transaction();
-  for (const doc of [...newsDocs, ...galleryDocs, ...memberDocs, ...publicationDocs, ...equipmentDocs, ...collaboratorDocs, ...researchDocs]) tx.createOrReplace(doc);
+  for (const doc of [homeDoc, ...newsDocs, ...galleryDocs, ...memberDocs, ...publicationDocs, ...equipmentDocs, ...collaboratorDocs, ...researchDocs]) tx.createOrReplace(doc);
   await tx.commit();
 
   const counts = await client.fetch(

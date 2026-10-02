@@ -598,7 +598,7 @@ export function EquipmentPage() {
   const { data: equipment } = useSanityData(EQUIPMENT_QUERY, mapEquipmentDocs, EQUIPMENT);
   return (
     <>
-      <PageHeader eyebrow="Equipment" title="Lab Instrumentation">
+      <PageHeader eyebrow="Equipment" title="Lab Instruments">
         <p className="page-header-lede">Core equipment supporting our RNA biology, proteomics, and cell biology research programs. Each entry lists the grant it was procured under.</p>
       </PageHeader>
       <Section tone="base" className="equipment-section">

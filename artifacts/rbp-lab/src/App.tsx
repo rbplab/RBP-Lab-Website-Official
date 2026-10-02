@@ -29,7 +29,8 @@ import {
   mapMemberDocs,
   type Member,
 } from '@/data/members';
-import { useSanityData } from '@/hooks/use-sanity-data';
+import { useSanityData, useSanityObject } from '@/hooks/use-sanity-data';
+import { HOME, HOME_QUERY, mapHomeDoc } from '@/data/home';
 import { NEWS_ITEMS, NEWS_QUERY, mapNewsDocs } from '@/data/news';
 
 const queryClient = new QueryClient();
@@ -347,6 +348,7 @@ function FacultyProfile() {
 function Home() {
   const newsRail = useRef<HTMLDivElement>(null);
   const { data: newsItems } = useSanityData(NEWS_QUERY, mapNewsDocs, NEWS_ITEMS);
+  const { data: home } = useSanityObject(HOME_QUERY, mapHomeDoc, HOME, (raw) => !raw);
 
   const moveNews = (direction: 'previous' | 'next') => {
     newsRail.current?.scrollBy({
@@ -363,23 +365,23 @@ function Home() {
           id="home-heading"
           data-testid="heading-rna-binding-proteins-laboratory"
         >
-          <span className="nowrap">RNA-Binding</span> Proteins Laboratory
+          {home.title}
         </h1>
         <div className="home-hero-grid">
           <div className="home-hero-copy">
-            <p className="home-hero-lede">Investigating the molecular logic of RNA-binding proteins in nonsense-mediated decay, splicing regulation, and gene expression fidelity.</p>
+            <p className="home-hero-lede">{home.lede}</p>
             <div className="keyword-list" aria-label="Research keywords">
-              {['Alternative Splicing', 'Splicing', 'Gene Expression', 'EJC Research'].map((tag) => <span key={tag}>{tag}</span>)}
+              {home.keywords.map((tag) => <span key={tag}>{tag}</span>)}
             </div>
             <div className="home-hero-actions">
-              <Link className="button button--solid" href="/research">Explore Research <ArrowRight size={15} aria-hidden="true" /></Link>
-              <Link className="button button--outline" href="/members">Meet the Team <ArrowRight size={15} aria-hidden="true" /></Link>
+              <Link className="button button--solid" href="/research">{home.primaryCtaLabel} <ArrowRight size={15} aria-hidden="true" /></Link>
+              <Link className="button button--outline" href="/members">{home.secondaryCtaLabel} <ArrowRight size={15} aria-hidden="true" /></Link>
             </div>
           </div>
           <FigureFrame
-            src="/images/lab/Proteomics.jpeg"
-            alt="Research figure: western blot of MAGOH and MAGOHB knockouts, ribbon structures of the two paralogs, and a bar chart of mean normalised peptide intensity across knockout and wildtype conditions"
-            caption="MAGOH / MAGOHB paralogs · Quantitative proteomics"
+            src={home.heroImage}
+            alt={home.heroImageAlt}
+            caption={home.heroImageCaption}
             className="hero-figure"
           />
         </div>
@@ -387,9 +389,9 @@ function Home() {
 
       <Section tone="base" id="research-focus">
         <SectionHeader
-          eyebrow="Research Focus"
-          title="Problems the lab is working on"
-          lede="Our programme spans the assembly of ribonucleoprotein complexes, their disruption in disease, and the regulatory consequences downstream."
+          eyebrow={home.focusEyebrow}
+          title={home.focusTitle}
+          lede={home.focusLede}
         />
         <div className="focus-grid stagger-list">
           {focusItems.map(({ number, title, description, icon: Icon }) => (
@@ -423,7 +425,7 @@ function Home() {
 
       <Section tone="sunken" className="news-section">
         <div className="news-header">
-          <SectionHeader eyebrow="Lab News & Achievements" title="Recent work from the laboratory" />
+          <SectionHeader eyebrow={home.newsEyebrow} title={home.newsTitle} />
           <div className="news-controls" aria-label="News carousel controls">
             <button type="button" onClick={() => moveNews('previous')} aria-label="Previous news items"><ArrowLeft size={16} aria-hidden="true" /></button>
             <button type="button" onClick={() => moveNews('next')} aria-label="Next news items"><ArrowRight size={16} aria-hidden="true" /></button>

@@ -67,15 +67,6 @@ export const NEWS_ITEMS: NewsEntry[] = [
     image: '/images/lab/IP_Data.jpeg',
   },
   {
-    id: 'icmr-estrogen-regulated-expression',
-    summary:
-      'Ongoing ICMR-funded project as Co-PI on genome-wide estrogen-regulated gene expression.',
-    kind: 'Funding · Co-PI',
-    venue: 'ICMR',
-    year: 'Ongoing',
-    image: '/images/lab/Isoform_Usage.jpeg',
-  },
-  {
     id: 'rnps1-oncogenic-splicing-factor',
     summary:
       'RNPS1 identified as an oncogenic splicing factor driving proliferation in cervical cancer cells.',

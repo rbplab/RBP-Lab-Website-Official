@@ -74,7 +74,20 @@ export const focusArea = defineType({
       description: 'Anchor target for the page navigation.',
       validation: (r) => r.required(),
     }),
-    defineField({name: 'eyebrow', title: 'Eyebrow', type: 'string', initialValue: 'Focus Area'}),
+    defineField({name: 'eyebrow', title: 'Eyebrow', type: 'string', initialValue: 'Research Theme'}),
+    defineField({
+      name: 'question',
+      title: 'Question',
+      type: 'string',
+      description: 'The question this theme answers. Shown in italics under the title.',
+    }),
+    defineField({
+      name: 'centralQuestion',
+      title: 'Central question',
+      type: 'text',
+      rows: 2,
+      description: 'Closing line. Rendered after the words "Central question:".',
+    }),
     defineField({
       name: 'icon',
       title: 'Icon',

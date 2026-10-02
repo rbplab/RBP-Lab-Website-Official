@@ -388,7 +388,7 @@ function Home() {
       <Section tone="base" id="research-focus">
         <SectionHeader
           eyebrow="Research Focus"
-          title="Four problems the lab is working on"
+          title="Problems the lab is working on"
           lede="Our programme spans the assembly of ribonucleoprotein complexes, their disruption in disease, and the regulatory consequences downstream."
         />
         <div className="focus-grid stagger-list">

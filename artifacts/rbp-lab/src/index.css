@@ -3392,6 +3392,105 @@
   /* Background concept accordion. */
   /* Citations under each research theme. Mirrors the faculty draft's model of
      linking a theme straight to the papers behind it. */
+  /* Sequential research points. One list under the Research heading rather
+     than a section per theme, which is what the PI asked for. */
+  .theme-list {
+    display: grid;
+    gap: clamp(3rem, 6vw, 5rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: theme;
+  }
+
+  .theme {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 0.82fr);
+    gap: clamp(1.5rem, 3vw, 2.75rem);
+    align-items: start;
+    scroll-margin-top: 7rem;
+  }
+
+  /* No figure means the copy runs into the third column rather than leaving a
+     hole; four of the six themes have a plate. */
+  .theme:not(:has(.theme-figure)) {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+  }
+
+  .theme + .theme {
+    border-top: 1px solid hsl(var(--line));
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .theme-marker {
+    display: grid;
+    justify-items: start;
+    gap: 0.9rem;
+    color: hsl(var(--accent));
+  }
+
+  .theme-number {
+    font-family: var(--app-font-serif);
+    font-size: 2.4rem;
+    line-height: 1;
+    opacity: 0.4;
+  }
+
+  .theme-body h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    line-height: 1.2;
+  }
+
+  .theme-question {
+    margin: 0.6rem 0 1.25rem;
+    color: hsl(var(--accent));
+    font-family: var(--app-font-serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .theme-body > p {
+    max-width: 44rem;
+    margin: 0 0 1rem;
+    line-height: 1.75;
+  }
+
+  .theme-central {
+    margin-top: 1.25rem;
+    border-left: 2px solid hsl(var(--accent) / 0.35);
+    padding-left: 1rem;
+    color: hsl(var(--ink-muted));
+    font-size: 0.92rem;
+  }
+
+  .theme-central strong {
+    color: hsl(var(--ink));
+    font-weight: 600;
+  }
+
+  .theme-figure {
+    position: sticky;
+    top: 7rem;
+  }
+
+  @media (max-width: 900px) {
+    .theme,
+    .theme:not(:has(.theme-figure)) {
+      grid-template-columns: 3rem minmax(0, 1fr);
+    }
+
+    .theme-figure {
+      position: static;
+      grid-column: 1 / -1;
+    }
+
+    .theme-number {
+      font-size: 1.8rem;
+    }
+  }
+
   .focus-papers {
     margin-top: 2rem;
     border-top: 1px solid hsl(var(--line));

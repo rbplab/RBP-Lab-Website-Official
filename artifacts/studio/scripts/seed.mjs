@@ -292,47 +292,11 @@ async function main() {
     });
   }
 
-  /**
-   * Starting point for which papers support which research theme, derived from
-   * topic keywords in each citation and then hand-checked — a keyword pass alone
-   * put an AuNP biosensor paper under "RBPs in human disease" purely because it
-   * mentions cancer. This is an editorial grouping, not a scientific claim, and
-   * the PI can re-pick it in the Studio.
-   */
-  const FOCUS_PAPERS = {
-    'asap-ejc-mrna-metabolism': ['journals-6', 'journals-10', 'journals-13', 'journals-25'],
-    'rbps-in-human-disease': ['journals-17', 'journals-21'],
-    'post-transcriptional-regulation': ['journals-8', 'journals-9', 'journals-15'],
-    'isoform-switching': ['journals-1', 'journals-3', 'journals-6', 'journals-11'],
-  };
-
-  const pipeline = await loadFromSite('research.ts', 'PIPELINE');
-  const concepts = await loadFromSite('research.ts', 'CONCEPTS');
-  const focusAreas = await loadFromSite('research.ts', 'FOCUS_AREAS');
+  const focusAreas = await loadFromSite('research.ts', 'FOCUS_AREA_SEED');
   const figures = await loadFromSite('research.ts', 'FIGURES');
-  console.log(
-    `\nResearch (${pipeline.length} stages, ${concepts.length} concepts, ` +
-      `${focusAreas.length} focus areas, ${figures.length} figures)`,
-  );
+  console.log(`\nResearch (${focusAreas.length} themes, ${figures.length} figures)`);
 
-  const researchDocs = [
-    ...pipeline.map((stage, index) => ({
-      _id: `pipeline-${stage.id}`,
-      _type: 'pipelineStage',
-      label: stage.label,
-      caption: stage.caption,
-      order: (index + 1) * 10,
-    })),
-    ...concepts.map((concept, index) => ({
-      _id: `concept-${concept.id}`,
-      _type: 'researchConcept',
-      title: concept.title,
-      eyebrow: concept.eyebrow,
-      icon: concept.icon,
-      body: concept.body,
-      order: (index + 1) * 10,
-    })),
-  ];
+  const researchDocs = [];
 
   for (const [index, area] of focusAreas.entries()) {
     const rel = (area.imageSrc || '').replace(/^\/images\//, '');
@@ -349,8 +313,10 @@ async function main() {
       summary: area.summary,
       body: area.body,
       tags: area.tags,
+      question: area.question,
+      centralQuestion: area.centralQuestion,
       order: (index + 1) * 10,
-      papers: (FOCUS_PAPERS[area.id] ?? []).map((pubId) => ({
+      papers: (area.papers ?? []).map((pubId) => ({
         _type: 'reference',
         _ref: `publication-${pubId}`,
         _key: pubId,
